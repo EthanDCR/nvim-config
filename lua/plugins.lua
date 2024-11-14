@@ -20,12 +20,12 @@ use { "ellisonleao/gruvbox.nvim" }
 
 -- use('mbbill/undotree')
 
---this is lsp.
-use({'neovim/nvim-lspconfig'})
-use({'hrsh7th/nvim-cmp'})
-use({'hrsh7th/cmp-nvim-lsp'})
+-- this is lsp.
+ -- use({'neovim/nvim-lspconfig'})
+--  use({'hrsh7th/nvim-cmp'})
+ -- use({'hrsh7th/cmp-nvim-lsp'})
 
-
+use {'akinsho/bufferline.nvim', tag = "*", requires = 'nvim-tree/nvim-web-devicons'}
 
 
  end)
