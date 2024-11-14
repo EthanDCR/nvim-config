@@ -21,10 +21,22 @@ use { "ellisonleao/gruvbox.nvim" }
 -- use('mbbill/undotree')
 
 -- this is lsp.
- -- use({'neovim/nvim-lspconfig'})
---  use({'hrsh7th/nvim-cmp'})
- -- use({'hrsh7th/cmp-nvim-lsp'})
+use {'williamboman/mason.nvim'}
+use {'williamboman/mason-lspconfig.nvim'}
+use {'neovim/nvim-lspconfig'}  -- core LSP configuration
+use {'hrsh7th/nvim-cmp'}        -- for autocompletion
+use {'hrsh7th/cmp-nvim-lsp'}    -- for LSP-based autocompletion sources
 
+
+-- snippets and bracket pairs.
+use {'L3MON4D3/LuaSnip'}
+use {'saadparwaiz1/cmp_luasnip'}
+use {'windwp/nvim-autopairs'}
+
+
+
+
+-- bufferline plugin.
 use {'akinsho/bufferline.nvim', tag = "*", requires = 'nvim-tree/nvim-web-devicons'}
 
 
