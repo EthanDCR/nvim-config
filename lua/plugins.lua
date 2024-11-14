@@ -34,6 +34,14 @@ use {'saadparwaiz1/cmp_luasnip'}
 use {'windwp/nvim-autopairs'}
 use {'windwp/nvim-autopairs'}
 
+-- Add these to your existing plugins
+use {'hrsh7th/cmp-buffer'}  -- Buffer completions
+use {'hrsh7th/cmp-path'}    -- Path completions
+
+use {'rafamadriz/friendly-snippets'}  -- Collection of snippets
+use {'hrsh7th/cmp-buffer'}           -- Make sure this is included
+use {'hrsh7th/cmp-path'}             -- Make sure this is included
+
 
 
 
