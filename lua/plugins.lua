@@ -18,6 +18,13 @@ use { "ellisonleao/gruvbox.nvim" }
 
  use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
 
+-- use('mbbill/undotree')
+
+--this is lsp.
+use({'neovim/nvim-lspconfig'})
+use({'hrsh7th/nvim-cmp'})
+use({'hrsh7th/cmp-nvim-lsp'})
+
 
 
 

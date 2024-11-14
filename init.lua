@@ -1,6 +1,5 @@
 
 
-print("hello")
 
 
 -- key remaps.
@@ -9,6 +8,8 @@ require("remaps")
 
 -- packer plugins.
 require("plugins")
+
+require("options")
 
 
 -- set colorscheme.
