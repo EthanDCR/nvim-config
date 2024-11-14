@@ -32,6 +32,7 @@ use {'hrsh7th/cmp-nvim-lsp'}    -- for LSP-based autocompletion sources
 use {'L3MON4D3/LuaSnip'}
 use {'saadparwaiz1/cmp_luasnip'}
 use {'windwp/nvim-autopairs'}
+use {'windwp/nvim-autopairs'}
 
 
 
