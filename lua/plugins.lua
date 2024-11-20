@@ -27,6 +27,15 @@ use {'neovim/nvim-lspconfig'}  -- core LSP configuration
 use {'hrsh7th/nvim-cmp'}        -- for autocompletion
 use {'hrsh7th/cmp-nvim-lsp'}    -- for LSP-based autocompletion sources
 
+-- prettier
+use {'neovim/nvim-lspconfig'}
+use {'jose-elias-alvarez/null-ls.nvim'}
+use {'MunifTanjim/prettier.nvim'}
+
+
+
+
+
 
 -- snippets and bracket pairs.
 use {'L3MON4D3/LuaSnip'}

@@ -30,3 +30,11 @@ vim.api.nvim_set_hl(0, "LineNr", { fg = "#928374", bg = "none" })
 vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#fabd2f", bg = "none" })
 
 
+-- Highlight yanked text for a brief moment
+vim.api.nvim_create_autocmd("TextYankPost", {
+  pattern = "*",
+  callback = function()
+    vim.highlight.on_yank { higroup = "IncSearch", timeout = 200 }
+  end,
+})
+
