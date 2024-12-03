@@ -52,6 +52,18 @@ use {'hrsh7th/cmp-buffer'}           -- Make sure this is included
 use {'hrsh7th/cmp-path'}             -- Make sure this is included
 
 
+-- luaLine plugin 
+
+use {
+  'nvim-lualine/lualine.nvim',
+  requires = { 'nvim-tree/nvim-web-devicons', opt = true }
+}
+
+
+
+
+
+
 
 
 -- bufferline plugin.
