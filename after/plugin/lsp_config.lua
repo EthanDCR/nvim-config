@@ -12,7 +12,7 @@ require('luasnip.loaders.from_vscode').lazy_load()
 -- Setup Mason
 mason.setup()
 mason_lspconfig.setup({
-    ensure_installed = { "jdtls", "pyright", "cssls", "gopls", "lua_ls" }
+    ensure_installed = { "jdtls", "pyright", "cssls", "gopls", "lua_ls", "clangd" }
 })
 
 -- Capabilities for nvim-cmp integration
@@ -173,5 +173,84 @@ null_ls.setup({
       end, { buffer = bufnr, desc = "[lsp] format" })
     end
   end,
+})
+
+
+
+-- Diagnostic signs
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+for type, icon in pairs(signs) do
+    local hl = "DiagnosticSign" .. type
+    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+end
+
+
+
+
+-- Set up nvim-cmp for autocompletion
+local cmp = require('cmp')
+cmp.setup({
+    mapping = cmp.mapping.preset.insert({
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        ['<Tab>'] = cmp.mapping.select_next_item(),
+        ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+    }),
+    sources = {
+        { name = 'nvim_lsp' },  -- LSP suggestions
+        { name = 'buffer' },    -- Buffer words
+        { name = 'path' },      -- File paths
+    },
+    snippet = {
+        expand = function(args)
+            require('luasnip').lsp_expand(args.body)
+        end,
+    },
+})
+
+
+
+
+
+
+
+
+-- Import Mason and Mason LSPConfig
+-- after/plugin/lsp_config.lua
+
+-- Import Mason and Mason LSPConfig
+require("mason").setup()
+require("mason-lspconfig").setup({
+    ensure_installed = { "clangd" }, -- Only list LSP servers here
+})
+
+-- Import LSPConfig
+local lspconfig = require("lspconfig")
+
+-- Function to set up keymaps and options when LSP attaches to a buffer
+local on_attach = function(client, bufnr)
+    local bufopts = { noremap=true, silent=true, buffer=bufnr }
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
+    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
+    vim.keymap.set('n', '<leader>f', function()
+        vim.lsp.buf.format { async = true }
+    end, bufopts)
+end
+
+-- Set up clangd for C++
+lspconfig.clangd.setup({
+    on_attach = on_attach,
+    capabilities = require("cmp_nvim_lsp").default_capabilities(),
+})
+
+-- Import null-ls for non-LSP tools (like linters)
+local null_ls = require("null-ls")
+null_ls.setup({
+    sources = {
+        null_ls.builtins.diagnostics.cpplint, -- Linter for C++
+    },
+    on_attach = on_attach,
 })
 
