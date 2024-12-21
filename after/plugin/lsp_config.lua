@@ -28,24 +28,6 @@ local on_attach = function(client, bufnr)
     end, bufopts)
 end
 
--- Java setup (for jdtls)
-lspconfig.jdtls.setup({
-    on_attach = on_attach,
-    capabilities = capabilities,
-    settings = {
-        java = {
-            signatureHelp = { enabled = true },
-            contentProvider = { preferred = 'fernflower' },
-            completion = {
-                favoriteStaticMembers = {
-                    "org.junit.Assert.*",
-                    "org.mockito.Mockito.*"
-                },
-            },
-        },
-    },
-})
-
 -- Setup clangd for C++
 lspconfig.clangd.setup({
     on_attach = on_attach,
@@ -109,12 +91,26 @@ cmp.setup({
     },
 })
 
--- Add Java-specific snippets
-luasnip.add_snippets('java', {
-    luasnip.snippet('sysout', {
-        luasnip.text_node('System.out.println('),
+-- Add C++ specific snippets
+luasnip.add_snippets('cpp', {
+    luasnip.snippet('cout', {
+        luasnip.text_node('std::cout << '),  -- This part will be static
+        luasnip.insert_node(1),              -- This is where you type your expression
+        luasnip.text_node(' << std::endl;'), -- Static part for the newline
+    }),
+
+  luasnip.snippet('for', {
+        luasnip.text_node('for (int i = 0; i < '),
+        luasnip.insert_node(1),  -- This is where you type the condition for the loop
+        luasnip.text_node('; i++) {}'),
+        luasnip.insert_node(2),  -- This is where you type the body of the loop
+    }),
+
+
+    luasnip.snippet('include', {
+        luasnip.text_node('#include <'),
         luasnip.insert_node(1),
-        luasnip.text_node(');'),
+        luasnip.text_node('>'),
     }),
 })
 
