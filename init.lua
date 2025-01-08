@@ -4,6 +4,13 @@ require("remaps")
 require("plugins")
 require("options")
 
+-- set font to jetbrains mono
+
+vim.o.guifont = "JetBrains Mono:h14"
+
+
+
+
 -- Gruvbox specific settings
 vim.g.gruvbox_contrast_dark = 'hard'  -- Makes background darker
 vim.g.gruvbox_transparent_bg = 1      -- Enable transparency support

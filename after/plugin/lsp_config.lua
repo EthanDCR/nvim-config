@@ -91,6 +91,214 @@ cmp.setup({
     },
 })
 
+ 
+-- Ensure jdtls is installed via Mason
+require("mason-lspconfig").setup({
+    ensure_installed = { "jdtls" },
+})
+
+-- Set up jdtls with Mason
+local lspconfig = require("lspconfig")
+local mason_registry = require("mason-registry")
+local jdtls_path = mason_registry.get_package("jdtls"):get_install_path()
+
+lspconfig.jdtls.setup({
+    cmd = { jdtls_path .. "/bin/jdtls" },
+    root_dir = lspconfig.util.root_pattern(".git", "mvnw", "gradlew"),
+    settings = {
+        java = {
+            format = {
+                enabled = true,
+                settings = {
+                    profile = "GoogleStyle", -- Example formatter profile
+                },
+            },
+        },
+    },
+    on_attach = function(client, bufnr)
+        local opts = { noremap = true, silent = true, buffer = bufnr }
+        vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+        vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+        vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+    end,
+})
+
+-- LuaSnip setup
+local luasnip = require("luasnip")
+
+-- Add custom snippet for sysout
+luasnip.add_snippets("java", {
+    luasnip.snippet("sysout", {
+        luasnip.text_node("System.out.println("),
+        luasnip.insert_node(1, '"Your text here"'),
+        luasnip.text_node(");"),
+    }),
+})
+
+-- Configure LuaSnip keymaps
+vim.keymap.set("i", "<C-k>", function()
+    if luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+    end
+end, { noremap = true, silent = true })
+
+vim.keymap.set("i", "<C-j>", function()
+    if luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+    end
+end, { noremap = true, silent = true })
+
+vim.keymap.set("s", "<C-k>", function()
+    if luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+    end
+end, { noremap = true, silent = true })
+
+vim.keymap.set("s", "<C-j>", function()
+    if luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+    end
+end, { noremap = true, silent = true })
+
+
+
+
+
+
+
+-- Add HTML snippets
+luasnip.add_snippets('html', {
+    -- HTML Boilerplate (trigger: "!")
+    luasnip.snippet('!', {
+        luasnip.text_node({
+            '<!DOCTYPE html>',
+            '<html lang="en">',
+            '<head>',
+            '  <meta charset="UTF-8">',
+            '  <meta name="viewport" content="width=device-width, initial-scale=1.0">',
+            '  <title>',
+        }),
+        luasnip.insert_node(1, 'Document'),
+        luasnip.text_node({
+            '</title>',
+            '</head>',
+            '<body>',
+            '',
+            '</body>',
+            '</html>',
+        }),
+    }),
+
+    -- h1 Tag (trigger: "h1")
+    luasnip.snippet('h1', {
+        luasnip.text_node('<h1>'),
+        luasnip.insert_node(1, 'Heading 1'),
+        luasnip.text_node('</h1>'),
+    }),
+
+    -- h2 Tag (trigger: "h2")
+    luasnip.snippet('h2', {
+        luasnip.text_node('<h2>'),
+        luasnip.insert_node(1, 'Heading 2'),
+        luasnip.text_node('</h2>'),
+    }),
+
+    -- h3 Tag (trigger: "h3")
+    luasnip.snippet('h3', {
+        luasnip.text_node('<h3>'),
+        luasnip.insert_node(1, 'Heading 3'),
+        luasnip.text_node('</h3>'),
+    }),
+
+    -- Image Tag (trigger: "img")
+    luasnip.snippet('img', {
+        luasnip.text_node('<img src="'),
+        luasnip.insert_node(1, 'image.jpg'),
+        luasnip.text_node('" alt="'),
+        luasnip.insert_node(2, 'Description'),
+        luasnip.text_node('">'),
+    }),
+
+    -- Link Tag (trigger: "a")
+    luasnip.snippet('a', {
+        luasnip.text_node('<a href="'),
+        luasnip.insert_node(1, 'https://example.com'),
+        luasnip.text_node('">'),
+        luasnip.insert_node(2, 'Link Text'),
+        luasnip.text_node('</a>'),
+    }),
+
+    -- Unordered List (trigger: "ul")
+    luasnip.snippet('ul', {
+        luasnip.text_node({
+            '<ul>',
+            '  <li>',
+        }),
+        luasnip.insert_node(1, 'Item 1'),
+        luasnip.text_node('</li>'),
+        luasnip.text_node({
+            '  <li>',
+        }),
+        luasnip.insert_node(2, 'Item 2'),
+        luasnip.text_node('</li>'),
+        luasnip.text_node({
+            '</ul>',
+        }),
+    }),
+
+    -- Strong Tag (trigger: "strong")
+    luasnip.snippet('strong', {
+        luasnip.text_node('<strong>'),
+        luasnip.insert_node(1, 'Bold Text'),
+        luasnip.text_node('</strong>'),
+    }),
+
+    -- Div Tag (trigger: "div")
+    luasnip.snippet('div', {
+        luasnip.text_node('<div'),
+        luasnip.insert_node(1, ' class="container"'),
+        luasnip.text_node('>'),
+        luasnip.insert_node(2, 'Content here'),
+        luasnip.text_node('</div>'),
+    }),
+})
+
+
+
+
+-- Add C++ snippets
+luasnip.add_snippets('cpp', {
+    -- std::cout (trigger: "cout")
+    luasnip.snippet('cout', {
+        luasnip.text_node('std::cout << '),
+        luasnip.insert_node(1, 'expression'),
+        luasnip.text_node(' << std::endl;'),
+    }),
+
+    -- For loop (trigger: "for")
+    luasnip.snippet('for', {
+        luasnip.text_node('for (int i = 0; i < '),
+        luasnip.insert_node(1, 'n'),
+        luasnip.text_node('; i++) {'),
+        luasnip.text_node({'', '  '}),
+        luasnip.insert_node(2, '/* code */'),
+        luasnip.text_node({'', '}'}),
+    }),
+
+    -- Include statement (trigger: "include")
+    luasnip.snippet('include', {
+        luasnip.text_node('#include <'),
+        luasnip.insert_node(1, 'library'),
+        luasnip.text_node('>'),
+    }),
+})
+
+
+
+
+
 -- Add C++ specific snippets
 luasnip.add_snippets('cpp', {
     luasnip.snippet('cout', {
