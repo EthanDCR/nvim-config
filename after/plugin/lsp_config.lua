@@ -34,6 +34,10 @@ lspconfig.clangd.setup({
     capabilities = capabilities,
     cmd = { 
         "clangd", 
+        "--background-index",  -- Enable background indexing for better performance
+        "--all-scopes-completion",  -- Allow completion in all scopes
+        "--completion-style=detailed",  -- Enhance completion details
+        "--clang-tidy",  -- Enable clang-tidy diagnostics
         "--query-driver=/usr/bin/g++", 
         "-I/usr/include/c++/11", 
         "-I/usr/include/x86_64-linux-gnu", 
@@ -155,4 +159,11 @@ for type, icon in pairs(signs) do
     local hl = "DiagnosticSign" .. type
     vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 end
+
+-- Configure how diagnostics are shown
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+    virtual_text = true, -- Show error messages inline
+    signs = true,        -- Show signs in the gutter
+    underline = true,    -- Underline errors
+})
 
